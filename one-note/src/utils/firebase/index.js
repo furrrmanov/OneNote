@@ -18,3 +18,40 @@ export const database = firebase.database()
 export const storage = firebase.storage()
 const provider = new firebase.auth.GoogleAuthProvider()
 export default firebase
+
+export const singInWithEmailUsingFirebase = (email, password) => {
+  return firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then((result) => {
+      const { user } = result
+      return user
+    })
+    .catch((error) => {})
+}
+
+export const singInWithGoogleAccountUsingFirebase = () => {
+  return firebase
+    .auth()
+    .signInWithPopup(provider)
+    .then(function (result) {
+      const { user } = result
+      return user
+    })
+}
+
+export const checkUserAuth = () => {
+  return new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
+  })
+}
+
+export const singOutUsingFirebase = () => {
+  return firebase.auth().signOut()
+}
