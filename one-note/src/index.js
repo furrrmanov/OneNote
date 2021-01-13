@@ -7,6 +7,6 @@ import reportWebVitals from './reportWebVitals'
 
 ReactDOM.render(<App />, document.getElementById('root'))
 
-serviceWorkerRegistration.unregister()
+serviceWorkerRegistration.register()
 
 reportWebVitals()
