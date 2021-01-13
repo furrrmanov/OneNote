@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import logger from 'redux-logger'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 import rootSaga from '@/sagas'
 import reducer from '@/redux/reducer'
@@ -17,7 +18,7 @@ if (process.env.NODE_ENV === 'development') {
 export const store = createStore(
   reducer,
   persistedState,
-  applyMiddleware(...middlewares)
+  composeWithDevTools(applyMiddleware(...middlewares))
 )
 
 sagaMiddleware.run(rootSaga)
