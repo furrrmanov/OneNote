@@ -1,0 +1,28 @@
+import React from 'react'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom'
+
+import {
+  ROUT_FOR_NOTEBOOK_PAGE,
+  ROUT_FOR_SIGNIN_PAGE,
+  ROUT_FOR_ROOT_PAGE,
+} from '@/constants'
+import Landing from '@/components/pages/LandingPage'
+import SignIn from '@/components/pages/SignIn'
+import PrivateRout from '@/components/wrappers/PrivateRoute'
+
+export default function RouteWrapper() {
+  return (
+    <Router>
+      <Switch>
+        <Redirect path={ROUT_FOR_ROOT_PAGE} to={ROUT_FOR_NOTEBOOK_PAGE} exact />
+        <Route path={ROUT_FOR_SIGNIN_PAGE} component={SignIn} />
+        <PrivateRout path={ROUT_FOR_NOTEBOOK_PAGE} component={Landing} />
+      </Switch>
+    </Router>
+  )
+}

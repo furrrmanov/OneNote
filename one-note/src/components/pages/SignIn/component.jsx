@@ -15,7 +15,7 @@ import {
   SetUserSingInEmailRequest,
   SetUserSingInWithGoogleRequest,
 } from '@/actions'
-import { ROUT_FOR_LANDING_PAGE } from '@/constants'
+import { ROUT_FOR_NOTEBOOK_PAGE } from '@/constants'
 
 import { GoogleSignInButton } from './styles'
 
@@ -68,7 +68,7 @@ export default function SignIn() {
 
   useEffect(() => {
     if (user.isLogged) {
-      history.push(ROUT_FOR_LANDING_PAGE)
+      history.push(ROUT_FOR_NOTEBOOK_PAGE)
     }
   }, [user.isLogged, history])
 
