@@ -3,11 +3,14 @@ import { Provider } from 'react-redux'
 
 import { store } from '@/redux/store'
 import RouteWrapper from '@/components/wrappers/RouteWrapper'
+import ThemeWrapper from '@/components/wrappers/ThemeWrapper'
 
 function App() {
   return (
     <Provider store={store}>
-      <RouteWrapper />
+      <ThemeWrapper>
+        <RouteWrapper />
+      </ThemeWrapper>
     </Provider>
   )
 }
