@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+import { makeStyles } from '@material-ui/core/styles'
+
 import { userLogOut } from '@/actions'
 import { singOutUsingFirebase } from '@/utils/firebase'
 import { ROUT_FOR_SIGNIN_PAGE } from '@/constants'
@@ -19,12 +21,20 @@ import {
   UserInfo,
 } from './styles'
 
+const styles = makeStyles((theme) => ({
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    position: 'relative',
+  },
+}))
+
 export default function ProfileAppBar() {
   const { name, photoUrl, isLogged, email } = useSelector((state) => state.user)
   const history = useHistory()
   const dispatch = useDispatch()
   const [userAnchorEl, setUserAnchorEl] = useState(null)
   const openUserMenu = Boolean(userAnchorEl)
+  const classes = styles()
 
   const handleUserMenuOnClick = (event) => {
     setUserAnchorEl(event.currentTarget)
@@ -45,8 +55,8 @@ export default function ProfileAppBar() {
 
   return (
     <Wrapper>
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar position="static" className={classes.appBar}>
+        <Toolbar className={classes.toolbar}>
           <UserInfo>
             <UserName>{isLogged && name !== 'null' ? name : email}</UserName>
             <IconButton
