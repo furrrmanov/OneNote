@@ -34,7 +34,7 @@ export const Menu = styled(MaterialMenu)``
 export const IconButton = styled(MaterialIconButton)``
 
 export const Wrapper = styled.div`
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 `
 
 export const UserInfo = styled.div`

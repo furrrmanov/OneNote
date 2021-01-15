@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+import { FormattedMessage } from 'react-intl'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { userLogOut } from '@/actions'
@@ -82,7 +83,9 @@ export default function ProfileAppBar() {
               }}
               open={openUserMenu}
               onClose={CloseUserMenu}>
-              <MenuItem onClick={userSingOut}>Log-out</MenuItem>
+              <MenuItem onClick={userSingOut}>
+                <FormattedMessage id="logOutButton" defaultMessage="Log-out" />
+              </MenuItem>
             </Menu>
           </UserInfo>
         </Toolbar>
