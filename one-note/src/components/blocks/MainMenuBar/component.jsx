@@ -1,28 +1,29 @@
 import React from 'react'
+
+import { FormattedMessage } from 'react-intl'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
+import CollectionsBookmarkOutlinedIcon from '@material-ui/icons/CollectionsBookmarkOutlined'
 
 import { List } from './styles'
+
+const drawerWidth = 170
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  menuButton: {
-    marginRight: 36,
-  },
   drawer: {
-    width: 170,
+    width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
   },
   drawerOpen: {
-    width: 170,
+    width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -72,12 +73,16 @@ export default function MainMenuBar() {
           }),
         }}>
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Notebook'].map((text) => (
             <ListItem button key={text}>
               <ListItemIcon>
-                <InboxIcon />
+                <CollectionsBookmarkOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText
+                primary={
+                  <FormattedMessage id="Notebook" defaultMessage="Notebook" />
+                }
+              />
             </ListItem>
           ))}
         </List>

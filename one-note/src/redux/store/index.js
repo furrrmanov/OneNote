@@ -15,6 +15,7 @@ const middlewares = [sagaMiddleware]
 if (process.env.NODE_ENV === 'development') {
   middlewares.unshift(logger)
 }
+
 export const store = createStore(
   reducer,
   persistedState,
