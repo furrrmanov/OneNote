@@ -1,9 +1,7 @@
 import { NOTEBOOK_LIST_REQUEST, SET_NOTEBOOK_LIST } from '@/actions'
 
 const initialState = {
-  notebooks: {
-    notebookList: [],
-  },
+  notebookList: [],
 }
 
 export default function notebook(state = initialState, { type, payload }) {
@@ -16,7 +14,7 @@ export default function notebook(state = initialState, { type, payload }) {
     case SET_NOTEBOOK_LIST: {
       return {
         ...state,
-        userProfile: payload,
+        notebookList: payload,
       }
     }
     default:

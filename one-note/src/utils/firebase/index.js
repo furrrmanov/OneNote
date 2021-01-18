@@ -1,6 +1,9 @@
 import firebase from 'firebase'
 import 'firebase/storage'
 
+// import { store } from '@/redux/store'
+// import { usersProfileListRequest } from '@/actions'
+
 const firebaseConfig = {
   apiKey: 'AIzaSyDTpiyd9g8P0c4T9x3J7oJ2OxpliP2op1k',
   authDomain: 'onenote-5dd9c.firebaseapp.com',
@@ -66,6 +69,13 @@ export const getDataInFirebaseDb = (root) => {
     .once('value')
     .then((snapshot) => Object.entries(snapshot.val()))
 }
+
+// export const getDataInFirebaseDb = (root) => {
+//   return  database.ref(`${root}`).on('value', (snapshot) => {
+//     const data = snapshot.val()
+//     console.log(data)
+//   })
+// }
 
 export const updateDataInFirebaseDb = (value) => {
   const databaseRef = database.ref(value.collectionName)

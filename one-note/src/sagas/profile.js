@@ -21,21 +21,23 @@ export function* watchUsersProfileListRequest() {
 
 function* workerUsersProfileList() {
   const state = yield select()
-  const usersProfileList = yield call(getDataInFirebaseDb, '/userProfiles')
-  const userProfile = yield transformDataList(usersProfileList).find(
-    (item) => item.owner === state.user.email
-  )
+  try {
+    const usersProfileList = yield call(getDataInFirebaseDb, '/userProfiles')
+    const userProfile = yield transformDataList(usersProfileList).find(
+      (item) => item.owner === state.user.email
+    )
 
-  if (userProfile) {
-    yield put(setUserProfile(userProfile))
-    yield call(updateDataInFirebaseDb, {
-      collectionName: '/userProfiles',
-      collectionRoot: 'userProfiles/',
-      profile: userProfile,
-    })
-  } else {
-    yield put(createUserProfileRequest())
-  }
+    if (userProfile) {
+      yield put(setUserProfile(userProfile))
+      yield call(updateDataInFirebaseDb, {
+        collectionName: '/userProfiles',
+        collectionRoot: 'userProfiles/',
+        profile: userProfile,
+      })
+    } else {
+      yield put(createUserProfileRequest())
+    }
+  } catch {}
 }
 
 export function* watchCreateUserProfileRequest() {
