@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import { makeStyles } from '@material-ui/styles'
 
-import { usersProfileListRequest } from '@/actions'
+import { usersProfileListRequest, notebookListRequest } from '@/actions'
 import NotebookList from '@/components/blocks/notebook/NotebookView/NotebookList'
 import NoteList from '@/components/blocks/notebook/NotebookView/NoteList'
 import NoteEditor from '@/components/blocks/notebook/NotebookView/NoteEditor'
@@ -18,11 +18,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NotebookView() {
   const dispatch = useDispatch()
+  const classes = useStyles()
 
   useEffect(() => {
     dispatch(usersProfileListRequest())
+    dispatch(notebookListRequest())
   }, [dispatch])
-  const classes = useStyles()
+
   return (
     <Wrapper className={classes.wrapper}>
       <NotebookList />

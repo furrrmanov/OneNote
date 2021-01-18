@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
-
-import { FormattedMessage } from 'react-intl'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 
 import Modal from '@/components/blocks/Modal'
 
+import { FormattedMessage } from 'react-intl'
+import { createNotebook } from '@/actions'
+import NotebookListItem from '@/components/blocks/notebook/NotebookView/NotebookListItem'
+
 import {
   Wrapper,
-  Item,
-  Title,
   ButtonContainer,
   Container,
   Button,
@@ -22,8 +24,18 @@ import {
 } from './styles'
 
 export default function NotebookList() {
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const match = useRouteMatch()
+  const notebookList = useSelector((state) => state.notebook.notebookList)
   const [showModal, setShowModal] = useState(false)
   const [notebookName, setNotebookName] = useState('')
+  const [activeItemId, setActiveItemId] = useState(null)
+
+  const handleActiveItem = (id) => {
+    history.push(match.path + `?id=${id}`)
+    setActiveItemId(id)
+  }
 
   const HandleClickCreateNoteBook = () => {
     setShowModal(true)
@@ -40,6 +52,7 @@ export default function NotebookList() {
   }
 
   const handleClickButtonOk = () => {
+    dispatch(createNotebook(notebookName))
     setShowModal(false)
     setNotebookName('')
   }
@@ -51,9 +64,16 @@ export default function NotebookList() {
   return (
     <Wrapper>
       <Container>
-        <Item title="Записная книжка 1">
-          <Title>Записная книжка 1 </Title>
-        </Item>
+        {notebookList.map((notebook) => {
+          return (
+            <NotebookListItem
+              key={notebook.id}
+              item={notebook}
+              isActive={activeItemId === notebook.id}
+              handleActiveItem={handleActiveItem}
+            />
+          )
+        })}
       </Container>
       <ButtonContainer>
         <Button variant="contained" onClick={HandleClickCreateNoteBook}>
@@ -76,7 +96,10 @@ export default function NotebookList() {
             />
           </PopupInputContainer>
           <PopupButtonContainer>
-            <PopupButton variant="contained" onClick={handleClickButtonOk}>
+            <PopupButton
+              variant="contained"
+              onClick={handleClickButtonOk}
+              disabled={!notebookName}>
               <FormattedMessage id="Ok" defaultMessage="Ok" />
             </PopupButton>
             <PopupButton variant="contained" onClick={handleClickButtonCancel}>

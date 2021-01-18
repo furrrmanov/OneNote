@@ -14,10 +14,12 @@ import {
 import Landing from '@/components/pages/LandingPage'
 import SignIn from '@/components/pages/SignIn'
 import PrivateRout from '@/components/wrappers/PrivateRoute'
+import MessagesBar from '@/components/blocks/MessagesBar'
 
 export default function RouteWrapper() {
   return (
     <Router>
+      <MessagesBar />
       <Switch>
         <Redirect path={ROUT_FOR_ROOT_PAGE} to={ROUT_FOR_NOTEBOOK_PAGE} exact />
         <Route path={ROUT_FOR_SIGNIN_PAGE} component={SignIn} />
