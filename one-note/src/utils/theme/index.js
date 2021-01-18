@@ -4,7 +4,7 @@ const themes = {
     background: '#f8f7ff',
     secondary: '#b8b8ff',
     primary: '#9381ff',
-    elements: '#ffd8be',
+    elements: '#b8b8ff',
   },
 }
 

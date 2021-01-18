@@ -55,3 +55,24 @@ export const checkUserAuth = () => {
 export const singOutUsingFirebase = () => {
   return firebase.auth().signOut()
 }
+
+export const sendDataInFirebaseDb = (data) => {
+  return database.ref(`${data.root}`).push(data.value)
+}
+
+export const getDataInFirebaseDb = (root) => {
+  return database
+    .ref(`${root}`)
+    .once('value')
+    .then((snapshot) => Object.entries(snapshot.val()))
+}
+
+export const updateDataInFirebaseDb = (value) => {
+  const databaseRef = database.ref(value.collectionName)
+
+  return databaseRef.once('value', (snpsht) => {
+    database
+      .ref(`${value.collectionRoot}${value.profile.id}`)
+      .set(value.profile)
+  })
+}

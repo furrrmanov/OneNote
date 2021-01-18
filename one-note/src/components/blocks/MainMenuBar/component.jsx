@@ -1,13 +1,11 @@
 import React from 'react'
 
-import { FormattedMessage } from 'react-intl'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import CollectionsBookmarkOutlinedIcon from '@material-ui/icons/CollectionsBookmarkOutlined'
+
+import MainMenuItem from '@/components/blocks/MainMenuItem'
+import { ROUT_FOR_NOTEBOOK_PAGE } from '@/constants'
 
 import { List } from './styles'
 
@@ -43,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+const MenuItem = [{ pathName: ROUT_FOR_NOTEBOOK_PAGE, name: 'Notebook' }]
+
 export default function MainMenuBar() {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
@@ -73,18 +73,15 @@ export default function MainMenuBar() {
           }),
         }}>
         <List>
-          {['Notebook'].map((text) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                <CollectionsBookmarkOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  <FormattedMessage id="Notebook" defaultMessage="Notebook" />
-                }
+          {MenuItem.map((item) => {
+            return (
+              <MainMenuItem
+                key={item.name}
+                pathName={item.pathName}
+                name={item.name}
               />
-            </ListItem>
-          ))}
+            )
+          })}
         </List>
       </Drawer>
     </div>

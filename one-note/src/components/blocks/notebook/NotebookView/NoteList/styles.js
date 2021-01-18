@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   position: relative;
   flex-direction: column;
   justify-content: space-between;
-  width: 200px;
+  min-width: 180px;
   height: 100%;
   border-right: 1px solid ${(props) => props.theme.elements};
 `
@@ -19,7 +19,7 @@ export const Item = styled.div`
   text-align: center;
   justify-content: center;
   cursor: pointer;
-  width: 100%;
+  width: 180px;
   height: 40px;
 
   &:hover {

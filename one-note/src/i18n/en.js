@@ -4,6 +4,8 @@ export const englishDictionary = {
     addNoteButton: 'Add note',
     addNotebookButton: 'Add notebook',
     logOutButton: 'Log-out',
-    Notebook: 'Notebook'
+    Notebook: 'Notebook',
+    Ok: 'Ok',
+    Cancel: 'Cancel',
   },
 }
