@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch, useHistory } from 'react-router-dom'
+import { useRouteMatch, useHistory, useLocation } from 'react-router-dom'
 
 import Modal from '@/components/blocks/Modal'
 
@@ -25,12 +25,20 @@ import {
 
 export default function NotebookList() {
   const dispatch = useDispatch()
+  const locale = useLocation()
   const history = useHistory()
   const match = useRouteMatch()
   const notebookList = useSelector((state) => state.notebook.notebookList)
   const [showModal, setShowModal] = useState(false)
   const [notebookName, setNotebookName] = useState('')
   const [activeItemId, setActiveItemId] = useState(null)
+
+  useEffect(() => {
+    const search = locale.search
+    const params = new URLSearchParams(search)
+    const query = params.get('id')
+    setActiveItemId(query)
+  }, [locale])
 
   const handleActiveItem = (id) => {
     history.push(match.path + `?id=${id}`)

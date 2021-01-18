@@ -13,3 +13,8 @@ export const transformDataList = (data) => {
     return acc
   }, [])
 }
+
+export const filteredNotebookList = (data, id = '') => {
+  const filteredData = data.find((item) => item.id === id)
+  return filteredData && filteredData.noteList ? filteredData.noteList : []
+}

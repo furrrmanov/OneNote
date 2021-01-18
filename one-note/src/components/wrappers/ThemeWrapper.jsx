@@ -36,8 +36,9 @@ export default function ThemeWrapper({ children }) {
         default: themes.baseTheme.background,
       },
       action: {
-        selected: themes.baseTheme.background,
-        hover: themes.baseTheme.secondary,
+        selected: themes.baseTheme.secondary,
+        hover: themes.baseTheme.primary,
+        disabled: themes.baseTheme.elements
       },
     },
   })
