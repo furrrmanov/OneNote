@@ -29,11 +29,6 @@ function* workerUsersProfileList() {
 
     if (userProfile) {
       yield put(setUserProfile(userProfile))
-      yield call(updateDataInFirebaseDb, {
-        collectionName: '/userProfiles',
-        collectionRoot: 'userProfiles/',
-        profile: userProfile,
-      })
     } else {
       yield put(createUserProfileRequest())
     }
@@ -48,9 +43,10 @@ function* workerCreateUserProfile() {
   const state = yield select()
 
   const profile = {
-    ...state.profiles.userProfile,
     owner: state.user.email,
   }
+
+  console.log(profile)
 
   yield put(setUserProfile(profile))
 

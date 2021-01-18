@@ -81,8 +81,10 @@ export const updateDataInFirebaseDb = (value) => {
   const databaseRef = database.ref(value.collectionName)
 
   return databaseRef.once('value', (snpsht) => {
-    database
-      .ref(`${value.collectionRoot}${value.profile.id}`)
-      .set(value.profile)
+    snpsht.forEach((dp) => {
+      database
+        .ref(`${value.collectionRoot}${value.id}`)
+        .update({ [value.itemName]: value.data })
+    })
   })
 }

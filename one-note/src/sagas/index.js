@@ -15,6 +15,8 @@ import {
   watchCreateNotebookRequest,
 } from './notebook'
 
+import { watchCreateNote } from './note'
+
 export default function* rootSaga() {
   yield all([
     watchUserSingInforEmailRequest(),
@@ -23,5 +25,6 @@ export default function* rootSaga() {
     watchCreateUserProfileRequest(),
     watchNotebookListRequest(),
     watchCreateNotebookRequest(),
+    watchCreateNote(),
   ])
 }
