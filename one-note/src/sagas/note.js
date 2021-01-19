@@ -1,7 +1,7 @@
 import { takeEvery, put, select, call } from 'redux-saga/effects'
 
 import moment from 'moment'
-import  uniqid from 'uniqid'
+import { v4 as uuidv4 } from 'uuid'
 
 import { filteredNotebookList } from '@/utils/dataMappers'
 import {
@@ -20,7 +20,7 @@ function* workerCreateNote({ payload }) {
   const noteList = filteredNotebookList(state.notebook.notebookList, payload)
   const newNote = {
     ownerId: payload,
-    id: uniqid(),
+    id: uuidv4(),
     date: moment().valueOf(),
     name: 'Untitled note',
     text: '',
