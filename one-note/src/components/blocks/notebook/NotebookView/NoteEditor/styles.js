@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import MaterialButton from '@material-ui/core/Button'
+
 export const Wrapper = styled.div`
   position: relative;
   display: flex;
@@ -11,7 +13,7 @@ export const Wrapper = styled.div`
     position: absolute;
     top: 0;
     margin-left: 20px;
-    border: 1px solid ${(props) => props.theme.elements};
+    border: 1px solid ${(props) => props.theme.secondary};
   }
 
   .ql-container.ql-snow {
@@ -35,4 +37,18 @@ export const NoteInfo = styled.div`
 export const DateContainer = styled.span`
   text-align: center;
   font-size: 13px;
+`
+
+export const Button = styled(MaterialButton)`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 80px;
+  border-radius: 0px !important;
+  text-transform: none !important;
+  background-color: ${(props) => props.theme.secondary} !important;
+
+  &:hover {
+    background-color: ${(props) => props.theme.primary} !important;
+  }
 `

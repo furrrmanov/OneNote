@@ -11,15 +11,21 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function NoteListItem(props) {
-  const { note, isActive, handleActiveItem } = props
+  const { note, isActive, handleActiveItem, handleContextMenu } = props
   const classes = useStyles()
 
   const handleClickNotebook = () => {
     handleActiveItem(note.id)
   }
-  
+
+  const handleRightClick = (event) => {
+    event.preventDefault()
+    handleContextMenu(note, { posX: event.pageX, posY: event.pageY })
+  }
+
   return (
     <Item
+      onContextMenu={handleRightClick}
       title={note.name}
       onClick={handleClickNotebook}
       className={isActive ? classes.active : null}>

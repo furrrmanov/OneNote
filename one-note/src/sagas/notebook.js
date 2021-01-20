@@ -1,14 +1,18 @@
 import { takeEvery, put, select, call } from 'redux-saga/effects'
 
-import { transformDataList } from '@/utils/dataMappers'
 import {
   NOTEBOOK_LIST_REQUEST,
   CREATE_NOTEBOOK_REQUEST,
   showSuccessSnackbar,
-  setNotebookList,
-  notebookListRequest
+  notebookListRequest,
+  DELETE_NOTEBOOK_REQUEST,
 } from '@/actions'
-import { sendDataInFirebaseDb, getDataInFirebaseDb } from '@/utils/firebase'
+import {
+  sendDataInFirebaseDb,
+  getNotebookListInFirebaseDb,
+  deleteNotebookInCollection,
+} from '@/utils/firebase'
+import { deleteItemFromNotebookList } from '@/utils/dataMappers'
 
 export function* watchNotebookListRequest() {
   yield takeEvery(NOTEBOOK_LIST_REQUEST, workerNotebookList)
@@ -16,13 +20,7 @@ export function* watchNotebookListRequest() {
 
 function* workerNotebookList() {
   try {
-    const state = yield select()
-    const response = yield getDataInFirebaseDb('/notebook')
-    const userNotebook = transformDataList(response).filter(
-      (item) => item.owner === state.user.email
-    )
-
-    yield put(setNotebookList(userNotebook))
+    yield getNotebookListInFirebaseDb('/notebook')
   } catch {}
 }
 
@@ -31,15 +29,33 @@ export function* watchCreateNotebookRequest() {
 }
 
 function* workerCreateNotebook({ payload }) {
-  const state = yield select()
-  yield console.log('create', payload)
-  yield call(sendDataInFirebaseDb, {
-    value: {
-      owner: state.user.email,
-      name: payload,
-    },
-    root: '/notebook',
-  })
-  yield put(notebookListRequest())
-  yield put(showSuccessSnackbar('Notebook created !'))
+  try {
+    const state = yield select()
+    yield call(sendDataInFirebaseDb, {
+      value: {
+        owner: state.user.email,
+        name: payload,
+      },
+      root: '/notebook',
+    })
+    yield put(notebookListRequest())
+    yield put(showSuccessSnackbar('Notebook created !'))
+  } catch {}
+}
+
+export function* watchDeleteNotebookRequest() {
+  yield takeEvery(DELETE_NOTEBOOK_REQUEST, workerDeleteNotebook)
+}
+
+function* workerDeleteNotebook({ payload }) {
+  try {
+    yield call(deleteNotebookInCollection, {
+      collectionName: '/notebook',
+      collectionRoot: 'notebook/',
+      id: payload.id,
+    })
+
+    yield put(notebookListRequest())
+    yield put(showSuccessSnackbar('Notebook deleted !'))
+  } catch {}
 }

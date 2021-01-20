@@ -11,6 +11,7 @@ export const Item = styled.div`
   height: 40px;
 
   &:hover {
+    transition: 0.4s linear;
     background-color: ${(props) => props.theme.secondary};
   }
 `

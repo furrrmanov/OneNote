@@ -13,9 +13,14 @@ import {
 import {
   watchNotebookListRequest,
   watchCreateNotebookRequest,
+  watchDeleteNotebookRequest,
 } from './notebook'
 
-import { watchCreateNote } from './note'
+import {
+  watchCreateNoteRequest,
+  wactUpdateNoteRequest,
+  watchDeleteNoteRequest,
+} from './note'
 
 export default function* rootSaga() {
   yield all([
@@ -25,6 +30,9 @@ export default function* rootSaga() {
     watchCreateUserProfileRequest(),
     watchNotebookListRequest(),
     watchCreateNotebookRequest(),
-    watchCreateNote(),
+    watchCreateNoteRequest(),
+    wactUpdateNoteRequest(),
+    watchDeleteNoteRequest(),
+    watchDeleteNotebookRequest(),
   ])
 }

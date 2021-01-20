@@ -1,6 +1,7 @@
 export const NOTEBOOK_LIST_REQUEST = 'SET_NOTEBOOK_LIST_REQUEST'
 export const SET_NOTEBOOK_LIST = 'SET_NOTEBOOK_LIST'
 export const CREATE_NOTEBOOK_REQUEST = 'CREATE_NOTEBOOK_REQUEST'
+export const DELETE_NOTEBOOK_REQUEST = 'DELETE_NOTEBOOK_REQUEST'
 
 export const notebookListRequest = () => ({
   type: NOTEBOOK_LIST_REQUEST,
@@ -13,5 +14,10 @@ export const createNotebook = (value) => ({
 
 export const setNotebookList = (value) => ({
   type: SET_NOTEBOOK_LIST,
+  payload: value,
+})
+
+export const deleteNotebook = (value) => ({
+  type: DELETE_NOTEBOOK_REQUEST,
   payload: value,
 })

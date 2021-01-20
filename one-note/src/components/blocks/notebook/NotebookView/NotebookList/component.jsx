@@ -7,6 +7,8 @@ import Modal from '@/components/blocks/Modal'
 import { FormattedMessage } from 'react-intl'
 import { createNotebook } from '@/actions'
 import NotebookListItem from '@/components/blocks/notebook/NotebookView/NotebookListItem'
+import ContextMenu from '@/components/blocks/ContextMenu'
+import { deleteNotebook } from '@/actions'
 
 import {
   Wrapper,
@@ -21,6 +23,7 @@ import {
   PopupButtonContainer,
   PopupButton,
   ButtonClose,
+  Overlay,
 } from './styles'
 
 export default function NotebookList() {
@@ -32,6 +35,12 @@ export default function NotebookList() {
   const [showModal, setShowModal] = useState(false)
   const [notebookName, setNotebookName] = useState('')
   const [activeItemId, setActiveItemId] = useState(null)
+  const [showContextMenu, setShowContextMenu] = useState(false)
+  const [contextMenuPosition, setContextMenuPosition] = useState({
+    posX: 0,
+    posY: 0,
+  })
+  const [conextItem, setConextItem] = useState('')
 
   useEffect(() => {
     const search = locale.search
@@ -69,8 +78,37 @@ export default function NotebookList() {
     setNotebookName(target.value)
   }
 
+  const handleContextMenu = (id, position) => {
+    setShowContextMenu(true)
+    setContextMenuPosition(position)
+    setConextItem(id)
+  }
+
+  const handleDeleteItem = (id) => {
+    dispatch(deleteNotebook(id))
+    history.push(match.path)
+  }
+
+  const handleClickOverlay = () => {
+    setShowContextMenu(false)
+  }
+
   return (
     <Wrapper>
+      {showContextMenu ? (
+        <Overlay onClick={handleClickOverlay}>
+          <ContextMenu
+            data={{
+              item: conextItem,
+              position: contextMenuPosition,
+              callback: {
+                deleteItem: handleDeleteItem,
+              },
+              show: showContextMenu,
+            }}
+          />
+        </Overlay>
+      ) : null}
       <Container>
         {notebookList.map((notebook) => {
           return (
@@ -79,6 +117,7 @@ export default function NotebookList() {
               item={notebook}
               isActive={activeItemId === notebook.id}
               handleActiveItem={handleActiveItem}
+              handleContextMenu={handleContextMenu}
             />
           )
         })}
