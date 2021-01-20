@@ -1,8 +1,9 @@
 import firebase from 'firebase'
 import 'firebase/storage'
 
-// import { store } from '@/redux/store'
-// import { usersProfileListRequest } from '@/actions'
+import { transformDataList } from '@/utils/dataMappers'
+import { store } from '@/redux/store'
+import { setNotebookList } from '@/actions'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDTpiyd9g8P0c4T9x3J7oJ2OxpliP2op1k',
@@ -70,14 +71,21 @@ export const getDataInFirebaseDb = (root) => {
     .then((snapshot) => Object.entries(snapshot.val()))
 }
 
-// export const getDataInFirebaseDb = (root) => {
-//   return  database.ref(`${root}`).on('value', (snapshot) => {
-//     const data = snapshot.val()
-//     console.log(data)
-//   })
-// }
+export const getNotebookListInFirebaseDb = (root) => {
+  return database.ref(`${root}`).on('value', (snapshot) => {
+    try {
+      const response = snapshot.val()
+      const state = store.getState()
+      const userNotebooks = transformDataList(Object.entries(response)).filter(
+        (item) => item.owner === state.user.email
+      )
 
-export const updateDataInFirebaseDb = (value) => {
+      store.dispatch(setNotebookList(userNotebooks))
+    } catch {}
+  })
+}
+
+export const updateNoteListInFirebaseDb = (value) => {
   const databaseRef = database.ref(value.collectionName)
 
   return databaseRef.once('value', (snpsht) => {
@@ -85,6 +93,16 @@ export const updateDataInFirebaseDb = (value) => {
       database
         .ref(`${value.collectionRoot}${value.id}`)
         .update({ [value.itemName]: value.data })
+    })
+  })
+}
+
+export const deleteNotebookInCollection = (value) => {
+  const databaseRef = database.ref(value.collectionName)
+
+  return databaseRef.once('value', (snpsht) => {
+    snpsht.forEach((dp) => {
+      database.ref(`${value.collectionRoot}${value.id}`).remove()
     })
   })
 }

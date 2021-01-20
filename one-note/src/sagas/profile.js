@@ -8,11 +8,7 @@ import {
   createUserProfileRequest,
 } from '@/actions'
 
-import {
-  sendDataInFirebaseDb,
-  getDataInFirebaseDb,
-  updateDataInFirebaseDb,
-} from '@/utils/firebase'
+import { sendDataInFirebaseDb, getDataInFirebaseDb } from '@/utils/firebase'
 import { transformDataList } from '@/utils/dataMappers'
 
 export function* watchUsersProfileListRequest() {
@@ -45,8 +41,6 @@ function* workerCreateUserProfile() {
   const profile = {
     owner: state.user.email,
   }
-
-  console.log(profile)
 
   yield put(setUserProfile(profile))
 

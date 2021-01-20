@@ -5,12 +5,11 @@ import MaterialCloseIcon from '@material-ui/icons/Close'
 
 export const Wrapper = styled.div`
   display: flex;
-  position: relative;
   flex-direction: column;
   justify-content: space-between;
   min-width: 180px;
   height: 100%;
-  border-right: 1px solid ${(props) => props.theme.elements};
+  border-right: 1px solid ${(props) => props.theme.secondary};
 `
 
 export const Container = styled.div`
@@ -96,4 +95,16 @@ export const ButtonClose = styled(MaterialCloseIcon)`
   top: 0;
   right: 0;
   cursor: pointer;
+`
+
+export const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999999;
+  background-color: #ffffff00;
 `

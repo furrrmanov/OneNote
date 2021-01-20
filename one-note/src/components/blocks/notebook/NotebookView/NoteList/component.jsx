@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch, useHistory, useLocation } from 'react-router-dom'
 
@@ -7,8 +7,10 @@ import { FormattedMessage } from 'react-intl'
 import { filteredNotebookList } from '@/utils/dataMappers'
 import { createNote } from '@/actions'
 import NoteListItem from '@/components/blocks/notebook/NotebookView/NoteListItem'
+import ContextMenu from '@/components/blocks/ContextMenu'
+import { deleteNote } from '@/actions'
 
-import { Wrapper, ButtonContainer, Container, Button } from './styles'
+import { Wrapper, ButtonContainer, Container, Button, Overlay } from './styles'
 
 export default function NoteList() {
   const dispatch = useDispatch()
@@ -16,9 +18,15 @@ export default function NoteList() {
   const match = useRouteMatch()
   const locale = useLocation()
   const search = locale.search
-  const params = new URLSearchParams(search)
+  const params = useMemo(() => new URLSearchParams(search), [search])
   const query = params.get('id')
   const [activeItemId, setActiveItemId] = useState(null)
+  const [showContextMenu, setShowContextMenu] = useState(false)
+  const [contextMenuPosition, setContextMenuPosition] = useState({
+    posX: 0,
+    posY: 0,
+  })
+  const [conextItem, setConextItem] = useState('')
   const noteList = filteredNotebookList(
     useSelector((state) => state.notebook.notebookList),
     query
@@ -34,12 +42,41 @@ export default function NoteList() {
     setActiveItemId(id)
   }
 
+  const handleContextMenu = (id, position) => {
+    setShowContextMenu(true)
+    setContextMenuPosition(position)
+    setConextItem(id)
+  }
+
   const handleClickCreateNote = () => {
     dispatch(createNote(query))
   }
 
+  const handleDeleteItem = (id) => {
+    dispatch(deleteNote(id))
+    history.push(match.path + `?id=${query}`)
+  }
+
+  const handleClickOverlay = () => {
+    setShowContextMenu(false)
+  }
+
   return (
     <Wrapper>
+      {showContextMenu ? (
+        <Overlay onClick={handleClickOverlay}>
+          <ContextMenu
+            data={{
+              item: conextItem,
+              position: contextMenuPosition,
+              callback: {
+                deleteItem: handleDeleteItem,
+              },
+              show: showContextMenu,
+            }}
+          />
+        </Overlay>
+      ) : null}
       <Container>
         {noteList.map((item) => {
           return (
@@ -48,6 +85,7 @@ export default function NoteList() {
               note={item}
               isActive={activeItemId === item.id}
               handleActiveItem={handleActiveItem}
+              handleContextMenu={handleContextMenu}
             />
           )
         })}
