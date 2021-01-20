@@ -23,8 +23,7 @@ export const Toolbar = styled(MaterialToolbar)`
 `
 
 export const MenuItem = styled(MaterialMenuItem)`
-  margin-left: 15px;
-  color: #ffffff;
+  color: ${(props) => props.theme.text};
 `
 
 export const Typography = styled(MaterialTypography)``

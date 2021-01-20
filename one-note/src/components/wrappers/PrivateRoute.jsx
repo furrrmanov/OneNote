@@ -2,7 +2,6 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 
-// import CircularProgress from '@material-ui/core/CircularProgress'
 import CircularProgress from '@/components/controls/Spinner'
 
 import { checkUserAuth } from '@/utils/firebase'
