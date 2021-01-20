@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useRouteMatch } from 'react-router-dom'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 
 import { FormattedMessage } from 'react-intl'
 import { makeStyles } from '@material-ui/core/styles'
@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import CollectionsBookmarkOutlinedIcon from '@material-ui/icons/CollectionsBookmarkOutlined'
+import MenuBookIcon from '@material-ui/icons/MenuBook'
 
 const useStyles = makeStyles((theme) => ({
   active: {
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MainMenuItem(props) {
   const { pathName, name } = props
   const classes = useStyles()
+  const history = useHistory()
   const match = useRouteMatch()
   const [isActive, setIsActive] = useState(false)
 
@@ -26,6 +28,18 @@ export default function MainMenuItem(props) {
 
   const handleClick = () => {
     setIsActive(true)
+    history.push(pathName)
+  }
+
+  const itemIcon = (name) => {
+    switch (name) {
+      case 'Notebook':
+        return <CollectionsBookmarkOutlinedIcon />
+      case 'Directory':
+        return <MenuBookIcon />
+      default:
+        break
+    }
   }
 
   return (
@@ -33,9 +47,7 @@ export default function MainMenuItem(props) {
       button
       className={isActive ? classes.active : null}
       onClick={handleClick}>
-      <ListItemIcon>
-        <CollectionsBookmarkOutlinedIcon />
-      </ListItemIcon>
+      <ListItemIcon>{itemIcon(name)}</ListItemIcon>
       <ListItemText
         primary={<FormattedMessage id={name} defaultMessage={name} />}
       />
