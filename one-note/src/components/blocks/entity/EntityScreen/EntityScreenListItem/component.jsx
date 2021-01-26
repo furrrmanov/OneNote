@@ -10,26 +10,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function NoteListItem(props) {
-  const { note, isActive, handleActiveItem, handleContextMenu } = props
+export default function EntityScreenListItem(props) {
+  const { item, isActive, handleActiveItem, handleContextMenu } = props
   const classes = useStyles()
 
   const handleClickNotebook = () => {
-    handleActiveItem(note.id)
+    handleActiveItem(item.id)
   }
 
   const handleRightClick = (event) => {
     event.preventDefault()
-    handleContextMenu(note, { posX: event.pageX, posY: event.pageY })
+    handleContextMenu(item, { posX: event.pageX, posY: event.pageY })
   }
 
   return (
     <Item
       onContextMenu={handleRightClick}
-      title={note.name}
+      title={item.name}
       onClick={handleClickNotebook}
       className={isActive ? classes.active : null}>
-      <Title>{note.name}</Title>
+      <Title>{item.name}</Title>
     </Item>
   )
 }

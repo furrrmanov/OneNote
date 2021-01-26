@@ -1,5 +1,5 @@
 export * from './user'
 export * from './profile'
-export * from './notebook'
+export * from './entity'
 export * from './messages'
-export * from './note'
+export * from './subEntity'

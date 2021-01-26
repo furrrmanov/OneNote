@@ -35,7 +35,7 @@ export default function MainMenuItem(props) {
     switch (name) {
       case 'Notebook':
         return <CollectionsBookmarkOutlinedIcon />
-      case 'Directory':
+      case 'Catalog':
         return <MenuBookIcon />
       default:
         break

@@ -10,26 +10,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function NotebookListItem(props) {
-  const { item, isActive, handleActiveItem, handleContextMenu } = props
+export default function SubEntityScreenListItem(props) {
+  const { note, isActive, handleActiveItem, handleContextMenu } = props
   const classes = useStyles()
 
   const handleClickNotebook = () => {
-    handleActiveItem(item.id)
+    handleActiveItem(note.id)
   }
 
   const handleRightClick = (event) => {
     event.preventDefault()
-    handleContextMenu(item, { posX: event.pageX, posY: event.pageY })
+    handleContextMenu(note, { posX: event.pageX, posY: event.pageY })
   }
 
   return (
     <Item
-    onContextMenu={handleRightClick}
-      title={item.name}
+      onContextMenu={handleRightClick}
+      title={note.name}
       onClick={handleClickNotebook}
       className={isActive ? classes.active : null}>
-      <Title>{item.name}</Title>
+      <Title>{note.name}</Title>
     </Item>
   )
 }

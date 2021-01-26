@@ -14,16 +14,16 @@ export const transformDataList = (data) => {
   }, [])
 }
 
-export const filteredNotebookList = (data, id = '') => {
+export const filteredEntityList = (data, id = '', listName) => {
   const filteredData = data.find((item) => item.id === id)
-  return filteredData && filteredData.noteList ? filteredData.noteList : []
+  return filteredData && filteredData[`${listName}List`] ? filteredData[`${listName}List`]  : []
 }
 
-export const activeNotebook = (data, notebookId = '') => {
-  return data.find((item) => item.id === notebookId)
+export const activeEntity = (data, entityId = '') => {
+  return data.find((item) => item.id === entityId)
 }
 
-export const activeNote = (data, noteId = '') => {
+export const activeNote = (data, noteId = '', listName) => {
   return data && data.noteList && noteId
     ? data.noteList.find((item) => item.id === noteId)
     : {}
@@ -37,8 +37,4 @@ export const updateItemFromNoteList = (data, newItem) => {
 
 export const deleteItemFromNoteList = (data, item) => {
   return data.filter((note) => note.id !== item.id)
-}
-
-export const deleteItemFromNotebookList = (data, item) => {
-  return data.filter((notebook) => notebook.id !== item.id)
 }

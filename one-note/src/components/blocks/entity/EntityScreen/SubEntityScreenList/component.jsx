@@ -1,25 +1,22 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouteMatch, useHistory, useLocation } from 'react-router-dom'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 
 import { FormattedMessage } from 'react-intl'
 
-import { filteredNotebookList } from '@/utils/dataMappers'
-import { createNote } from '@/actions'
-import NoteListItem from '@/components/blocks/notebook/NotebookView/NoteListItem'
+import { filteredEntityList } from '@/utils/dataMappers'
+import { createSubEntity } from '@/actions'
+import SubEntityScreenListItem from '@/components/blocks/entity/EntityScreen/SubEntityScreenListItem'
 import ContextMenu from '@/components/blocks/ContextMenu'
 import { deleteNote } from '@/actions'
 
 import { Wrapper, ButtonContainer, Container, Button, Overlay } from './styles'
 
-export default function NoteList() {
+export default function SubEntityScreenList(props) {
+  const { subEntityName, entityName, query } = props
   const dispatch = useDispatch()
   const history = useHistory()
   const match = useRouteMatch()
-  const locale = useLocation()
-  const search = locale.search
-  const params = useMemo(() => new URLSearchParams(search), [search])
-  const query = params.get('id')
   const [activeItemId, setActiveItemId] = useState(null)
   const [showContextMenu, setShowContextMenu] = useState(false)
   const [contextMenuPosition, setContextMenuPosition] = useState({
@@ -27,18 +24,18 @@ export default function NoteList() {
     posY: 0,
   })
   const [conextItem, setConextItem] = useState('')
-  const noteList = filteredNotebookList(
-    useSelector((state) => state.notebook.notebookList),
-    query
+  const noteList = filteredEntityList(
+    useSelector((state) => state.entity.entityList),
+    query.id,
+    subEntityName.id
   )
 
   useEffect(() => {
-    const query = params.get('note')
-    setActiveItemId(query)
-  }, [params])
+    setActiveItemId(query.subId)
+  }, [query.subId])
 
   const handleActiveItem = (id) => {
-    history.push(match.path + `?id=${query}&note=${id}`)
+    history.push(match.path + `?id=${query.id}&subId=${id}`)
     setActiveItemId(id)
   }
 
@@ -48,13 +45,21 @@ export default function NoteList() {
     setConextItem(id)
   }
 
-  const handleClickCreateNote = () => {
-    dispatch(createNote(query))
+  const handleClickCreateItem = () => {
+    dispatch(
+      createSubEntity({
+        id: query.id,
+        root: entityName.id,
+        name: subEntityName.id,
+      })
+    )
   }
 
-  const handleDeleteItem = (id) => {
-    dispatch(deleteNote(id))
-    history.push(match.path + `?id=${query}`)
+  const handleDeleteItem = (item) => {
+    dispatch(
+      deleteNote({ item: item, root: entityName.id, name: subEntityName.id })
+    )
+    history.push(match.path + `?id=${query.id}`)
   }
 
   const handleClickOverlay = () => {
@@ -80,7 +85,7 @@ export default function NoteList() {
       <Container>
         {noteList.map((item) => {
           return (
-            <NoteListItem
+            <SubEntityScreenListItem
               key={Math.random() * 10}
               note={item}
               isActive={activeItemId === item.id}
@@ -93,9 +98,12 @@ export default function NoteList() {
       <ButtonContainer>
         <Button
           variant="contained"
-          onClick={handleClickCreateNote}
-          disabled={!query}>
-          <FormattedMessage id="addNoteButton" defaultMessage="Add note" />
+          onClick={handleClickCreateItem}
+          disabled={!query.id}>
+          <FormattedMessage
+            id={`add${subEntityName.label}Button`}
+            defaultMessage={`Add ${subEntityName.id}`}
+          />
         </Button>
       </ButtonContainer>
     </Wrapper>
