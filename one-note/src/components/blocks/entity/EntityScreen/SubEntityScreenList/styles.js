@@ -26,7 +26,6 @@ export const Button = styled(MaterialButton)`
   width: 100%;
   border-radius: 0px !important;
   text-transform: none !important;
-  color: ${(props) => props.theme.text} !important;
   background-color: ${(props) => props.theme.secondary} !important;
 
   &:hover {

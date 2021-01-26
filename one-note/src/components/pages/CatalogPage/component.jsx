@@ -4,36 +4,37 @@ import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
 import { entityListRequest } from '@/actions'
+
 import BasicLayout from '@/components/layouts/BasicLayout'
 import EntityScreen from '@/components/blocks/entity/EntityScreen'
-import NoteEditor from '@/components/blocks/NoteEditor'
+import ArticleEditor from '@/components/blocks/ArticleEditor'
 
-export default function LandingPage() {
+export default function CatalogPage() {
   const dispatch = useDispatch()
   const locale = useLocation()
   const search = locale.search
   const params = new URLSearchParams(search)
 
   useEffect(() => {
-    dispatch(entityListRequest('/notebook'))
+    dispatch(entityListRequest('/catalog'))
   }, [dispatch])
 
   return (
     <BasicLayout>
       <EntityScreen
         entityName={{
-          id: 'notebook',
-          label: 'Notebook',
+          id: 'catalog',
+          label: 'Catalog',
         }}
         subEntityName={{
-          id: 'note',
-          label: 'Note',
+          id: 'article',
+          label: 'Article',
         }}
         query={{
           id: params.get('id'),
           subId: params.get('subId'),
         }}
-        editor={NoteEditor}
+        editor={ArticleEditor}
       />
     </BasicLayout>
   )

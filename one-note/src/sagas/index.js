@@ -11,16 +11,16 @@ import {
 } from './profile'
 
 import {
-  watchNotebookListRequest,
-  watchCreateNotebookRequest,
-  watchDeleteNotebookRequest,
-} from './notebook'
+  watchEntityListRequest,
+  watchCreateEntityRequest,
+  watchDeleteEntityRequest,
+} from './entity'
 
 import {
-  watchCreateNoteRequest,
-  wactUpdateNoteRequest,
-  watchDeleteNoteRequest,
-} from './note'
+  watchCreateSubEntityRequest,
+  wactUpdateSubEntityRequest,
+  watchDeleteSubEntityRequest,
+} from './subEntity'
 
 export default function* rootSaga() {
   yield all([
@@ -28,11 +28,11 @@ export default function* rootSaga() {
     watchUserSingInforGoogleAccountRequest(),
     watchUsersProfileListRequest(),
     watchCreateUserProfileRequest(),
-    watchNotebookListRequest(),
-    watchCreateNotebookRequest(),
-    watchCreateNoteRequest(),
-    wactUpdateNoteRequest(),
-    watchDeleteNoteRequest(),
-    watchDeleteNotebookRequest(),
+    watchEntityListRequest(),
+    watchCreateEntityRequest(),
+    watchCreateSubEntityRequest(),
+    wactUpdateSubEntityRequest(),
+    watchDeleteSubEntityRequest(),
+    watchDeleteEntityRequest(),
   ])
 }

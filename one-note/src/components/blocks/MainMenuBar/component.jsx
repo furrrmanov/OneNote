@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 
 import MainMenuItem from '@/components/blocks/MainMenuItem'
-import { ROUT_FOR_NOTEBOOK_PAGE, ROUT_FOR_DIRECTORY_PAGE } from '@/constants'
+import { ROUT_FOR_NOTEBOOK_PAGE, ROUT_FOR_CATALOG_PAGE } from '@/constants'
 
 import { List } from './styles'
 
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MenuItem = [
   { pathName: ROUT_FOR_NOTEBOOK_PAGE, name: 'Notebook' },
-  { pathName: ROUT_FOR_DIRECTORY_PAGE, name: 'Directory' },
+  { pathName: ROUT_FOR_CATALOG_PAGE, name: 'Catalog' },
 ]
 
 export default function MainMenuBar() {

@@ -14,6 +14,7 @@ import Container from '@material-ui/core/Container'
 import {
   SetUserSingInEmailRequest,
   SetUserSingInWithGoogleRequest,
+  usersProfileListRequest
 } from '@/actions'
 import { ROUT_FOR_NOTEBOOK_PAGE } from '@/constants'
 
@@ -68,9 +69,10 @@ export default function SignIn() {
 
   useEffect(() => {
     if (user.isLogged) {
+       dispatch(usersProfileListRequest())
       history.push(ROUT_FOR_NOTEBOOK_PAGE)
     }
-  }, [user.isLogged, history])
+  }, [user.isLogged, history, dispatch])
 
   if (user.isLogged) {
     return null

@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
 
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -8,7 +7,7 @@ import moment from 'moment'
 import { makeStyles } from '@material-ui/styles'
 
 import { updateNote } from '@/actions'
-import { activeNote, activeNotebook } from '@/utils/dataMappers'
+import { activeNote, activeEntity } from '@/utils/dataMappers'
 import TextField from '@material-ui/core/TextField'
 
 import { Wrapper, NoteInfo, DateContainer, Button } from './styles'
@@ -24,21 +23,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function NoteEditor() {
+export default function NoteEditor(props) {
+  const { query, subEntityName, entityName } = props
   const [editorContent, setEditorContent] = useState(``)
   const [noteName, setNoteName] = useState('')
   const classes = useStyles()
   const dispatch = useDispatch()
-  const locale = useLocation()
-  const search = locale.search
-  const params = useMemo(() => new URLSearchParams(search), [search])
-  const queryNote = params.get('note')
-  const queryNotebook = params.get('id')
-  const notebook = activeNotebook(
-    useSelector((state) => state.notebook.notebookList),
-    queryNotebook
+  const notebook = activeEntity(
+    useSelector((state) => state.entity.entityList),
+    query.id
   )
-  const note = activeNote(notebook, queryNote)
+  const note = activeNote(notebook, query.subId)
 
   useEffect(() => {
     setNoteName(note.name)
@@ -54,11 +49,14 @@ export default function NoteEditor() {
   }
 
   const handleClickButtonSave = ({ target }) => {
-    dispatch(updateNote({ ...note, name: noteName, text: editorContent }))
+    const newNote = { ...note, name: noteName, text: editorContent }
+    dispatch(
+      updateNote({ item: newNote, root: entityName.id, name: subEntityName.id })
+    )
   }
 
   return (
-    <Wrapper className={queryNote === null ? classes.hide : classes.show}>
+    <Wrapper className={query.subId === null ? classes.hide : classes.show}>
       <NoteInfo>
         <TextField
           autoComplete="off"

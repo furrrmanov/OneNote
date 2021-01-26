@@ -3,7 +3,7 @@ import 'firebase/storage'
 
 import { transformDataList } from '@/utils/dataMappers'
 import { store } from '@/redux/store'
-import { setNotebookList } from '@/actions'
+import { setEntityList } from '@/actions'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDTpiyd9g8P0c4T9x3J7oJ2OxpliP2op1k',
@@ -71,7 +71,7 @@ export const getDataInFirebaseDb = (root) => {
     .then((snapshot) => Object.entries(snapshot.val()))
 }
 
-export const getNotebookListInFirebaseDb = (root) => {
+export const getEntityListInFirebaseDb = (root) => {
   return database.ref(`${root}`).on('value', (snapshot) => {
     try {
       const response = snapshot.val()
@@ -79,15 +79,14 @@ export const getNotebookListInFirebaseDb = (root) => {
       const userNotebooks = transformDataList(Object.entries(response)).filter(
         (item) => item.owner === state.user.email
       )
-
-      store.dispatch(setNotebookList(userNotebooks))
+      store.dispatch(setEntityList(userNotebooks))
     } catch {}
   })
 }
 
-export const updateNoteListInFirebaseDb = (value) => {
+export const updateSubEntityList = (value) => {
   const databaseRef = database.ref(value.collectionName)
-
+  
   return databaseRef.once('value', (snpsht) => {
     snpsht.forEach((dp) => {
       database
@@ -97,7 +96,7 @@ export const updateNoteListInFirebaseDb = (value) => {
   })
 }
 
-export const deleteNotebookInCollection = (value) => {
+export const deleteEntityInCollection = (value) => {
   const databaseRef = database.ref(value.collectionName)
 
   return databaseRef.once('value', (snpsht) => {
