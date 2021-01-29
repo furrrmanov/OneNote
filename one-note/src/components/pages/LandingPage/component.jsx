@@ -15,7 +15,7 @@ export default function LandingPage() {
   const params = new URLSearchParams(search)
 
   useEffect(() => {
-    dispatch(entityListRequest('/notebook'))
+    dispatch(entityListRequest('notebook'))
   }, [dispatch])
 
   return (

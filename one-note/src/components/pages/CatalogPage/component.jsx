@@ -7,7 +7,7 @@ import { entityListRequest } from '@/actions'
 
 import BasicLayout from '@/components/layouts/BasicLayout'
 import EntityScreen from '@/components/blocks/entity/EntityScreen'
-import ArticleEditor from '@/components/blocks/ArticleEditor'
+import ArticleEditorView from '@/components/blocks/articleEditor/ArticleEditorView'
 
 export default function CatalogPage() {
   const dispatch = useDispatch()
@@ -16,7 +16,7 @@ export default function CatalogPage() {
   const params = new URLSearchParams(search)
 
   useEffect(() => {
-    dispatch(entityListRequest('/catalog'))
+    dispatch(entityListRequest('catalog'))
   }, [dispatch])
 
   return (
@@ -34,7 +34,7 @@ export default function CatalogPage() {
           id: params.get('id'),
           subId: params.get('subId'),
         }}
-        editor={ArticleEditor}
+        editor={ArticleEditorView}
       />
     </BasicLayout>
   )

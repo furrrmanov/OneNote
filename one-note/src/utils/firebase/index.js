@@ -72,21 +72,22 @@ export const getDataInFirebaseDb = (root) => {
 }
 
 export const getEntityListInFirebaseDb = (root) => {
-  return database.ref(`${root}`).on('value', (snapshot) => {
+  return database.ref(`/${root}`).on('value', (snapshot) => {
     try {
       const response = snapshot.val()
       const state = store.getState()
-      const userNotebooks = transformDataList(Object.entries(response)).filter(
+      const userEntityList = transformDataList(Object.entries(response)).filter(
         (item) => item.owner === state.user.email
       )
-      store.dispatch(setEntityList(userNotebooks))
+
+      store.dispatch(setEntityList({ data: userEntityList, entityName: root }))
     } catch {}
   })
 }
 
 export const updateSubEntityList = (value) => {
   const databaseRef = database.ref(value.collectionName)
-  
+
   return databaseRef.once('value', (snpsht) => {
     snpsht.forEach((dp) => {
       database
@@ -104,4 +105,21 @@ export const deleteEntityInCollection = (value) => {
       database.ref(`${value.collectionRoot}${value.id}`).remove()
     })
   })
+}
+
+export const uploadFileToFirebaseStorage = async (profile, userEmail) => {
+  const file = profile
+  const storageRef = storage.ref()
+  const fileRef = storageRef.child(file.name)
+
+  await fileRef.put(file)
+  const url = await fileRef.getDownloadURL()
+
+  return { imgUrl: url, imgName: file.name }
+}
+
+export const deleteItemFromFirebaseStorage = (fileName) => {
+  const storageRef = storage.ref()
+  const fileRef = storageRef.child(fileName)
+  fileRef.delete()
 }

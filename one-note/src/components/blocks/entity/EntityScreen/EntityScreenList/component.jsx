@@ -30,7 +30,7 @@ export default function EntityScreenList(props) {
   const dispatch = useDispatch()
   const history = useHistory()
   const match = useRouteMatch()
-  const notebookList = useSelector((state) => state.entity.entityList)
+  const notebookList = useSelector((state) => state.entities[entityName.id])
   const [showModal, setShowModal] = useState(false)
   const [createdName, setCreatedName] = useState('')
   const [activeItemId, setActiveItemId] = useState(null)
