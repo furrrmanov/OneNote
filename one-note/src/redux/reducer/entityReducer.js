@@ -1,10 +1,11 @@
 import { ENTITY_LIST_REQUEST, SET_ENTITY_LIST } from '@/actions'
 
 const initialState = {
-  entityList: [],
+  notebook: [],
+  catalog: [],
 }
 
-export default function entity(state = initialState, { type, payload }) {
+export default function entities(state = initialState, { type, payload }) {
   switch (type) {
     case ENTITY_LIST_REQUEST: {
       return {
@@ -14,7 +15,7 @@ export default function entity(state = initialState, { type, payload }) {
     case SET_ENTITY_LIST: {
       return {
         ...state,
-        entityList: payload,
+        [payload.entityName]: payload.data,
       }
     }
     default:

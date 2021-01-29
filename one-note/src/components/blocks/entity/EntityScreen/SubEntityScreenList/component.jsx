@@ -25,7 +25,7 @@ export default function SubEntityScreenList(props) {
   })
   const [conextItem, setConextItem] = useState('')
   const noteList = filteredEntityList(
-    useSelector((state) => state.entity.entityList),
+    useSelector((state) => state.entities[entityName.id]),
     query.id,
     subEntityName.id
   )

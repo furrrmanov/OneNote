@@ -8,6 +8,7 @@ import {
   activeEntity,
   updateItemFromNoteList,
   deleteItemFromNoteList,
+  createSubEntity,
 } from '@/utils/dataMappers'
 import {
   CREATE_SUB_ENTITY_REQUEST,
@@ -25,40 +26,19 @@ function* workerCreateSubEntity({ payload }) {
   try {
     const state = yield select()
     const entityList = filteredEntityList(
-      state.entity.entityList,
+      state.entities[payload.root],
       payload.id,
       payload.name
     )
 
-    const newSubEntity = {
-      note: {
-        ownerId: payload.id,
-        id: uuidv4(),
-        date: moment().valueOf(),
-        name: 'Untitled note',
-        text: '',
-      },
-
-      article: {
-        ownerId: payload.id,
-        id: uuidv4(),
-        date: moment().valueOf(),
-        name: 'Untitled article',
-        img: [],
-        text: {
-          title: '',
-          desription: '',
-          characteristic: [],
-        },
-      },
-    }
+    const newSubEntity = createSubEntity(payload.name, payload.id)
 
     yield call(updateSubEntityList, {
       collectionName: `/${payload.root}`,
       collectionRoot: `${payload.root}/`,
       id: payload.id,
       itemName: `${payload.name}List`,
-      data: [...entityList, newSubEntity[payload.name]],
+      data: [...entityList, newSubEntity],
     })
 
     yield put(showSuccessSnackbar(`${payload.name} created !`))
@@ -72,7 +52,7 @@ export function* wactUpdateSubEntityRequest() {
 function* workerUpdateSubEntity({ payload }) {
   try {
     const state = yield select()
-    const entity = activeEntity(state.entity.entityList, payload.item.ownerId)
+    const entity = activeEntity(state.entities[payload.root], payload.item.ownerId)
     const filteredSubEntityList = updateItemFromNoteList(
       entity[`${payload.name}List`],
       payload.item
@@ -97,7 +77,7 @@ export function* watchDeleteSubEntityRequest() {
 function* workerDeleteSubEntity({ payload }) {
   try {
     const state = yield select()
-    const entity = activeEntity(state.entity.entityList, payload.item.ownerId)
+    const entity = activeEntity(state.entities[payload.root], payload.item.ownerId)
 
     const filteredSubEntityList = deleteItemFromNoteList(
       entity[`${payload.name}List`],

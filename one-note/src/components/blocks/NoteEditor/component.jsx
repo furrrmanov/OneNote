@@ -30,7 +30,7 @@ export default function NoteEditor(props) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const notebook = activeEntity(
-    useSelector((state) => state.entity.entityList),
+    useSelector((state) => state.entities[entityName.id]),
     query.id
   )
   const note = activeNote(notebook, query.subId)
