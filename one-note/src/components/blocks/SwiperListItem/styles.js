@@ -32,8 +32,16 @@ export const CloseIcon = styled(MaterialCloseIcon)`
 `
 
 export const Popup = styled.div`
-  width: 65vw;
-  height: 65vh;
+  max-width: 100%;
+  max-height: 100%;
   margin: auto;
   position: relative;
+  outline: none;
+  border: none;
+`
+
+export const Img = styled.img`
+  objectfit: contain;
+  max-width: 40vw;
+  max-height: 70vh;
 `

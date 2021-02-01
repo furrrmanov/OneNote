@@ -74,3 +74,15 @@ export const updateItemFromNoteList = (data, newItem) => {
 export const deleteItemFromNoteList = (data, item) => {
   return data.filter((note) => note.id !== item.id)
 }
+
+export const checkingArrayForUniquenessElements = (value, list) => {
+  const repetitionArray = list.characteristicList.filter(
+    (item) =>
+      item !== undefined &&
+      value !== undefined &&
+      item.characteristic &&
+      item.characteristic.trim() === value.trim()
+  )
+
+  return repetitionArray.length > 1 ? true : false
+}

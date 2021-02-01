@@ -11,7 +11,7 @@ import {
 import { updateNote } from '@/actions'
 import { activeArticle, activeEntity } from '@/utils/dataMappers'
 import SwiperImages from '@/components/blocks/Swiper'
-import CharacteristicListItem from '@/components/blocks/articleEditor/ArticleEditorView/CharacteristicListItem'
+import CharacteristicList from '@/components/blocks/articleEditor/ArticleEditorView/CharacteristicList'
 
 import {
   Wrapper,
@@ -24,6 +24,7 @@ import {
   SubTitle,
   CharacteristicWrapper,
   TextField,
+  Reminder,
 } from './styles'
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
     opacity: 1,
     transition: 'opacity .2s linear',
   },
+  required: {
+    color: '#ff0000',
+  },
 }))
 
 export default function ArticleInfo(props) {
@@ -50,6 +54,7 @@ export default function ArticleInfo(props) {
   const [characteristic, setCharacteristic] = useState([])
   const [image, setImage] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [changed, setChanged] = useState(false)
   const catalog = activeEntity(
     useSelector((state) => state.entities[entityName.id]),
     query.id
@@ -59,7 +64,11 @@ export default function ArticleInfo(props) {
   useEffect(() => {
     setArticleName(article.name)
     setDescription(article.description)
-    setCharacteristic(article.characteristicList)
+    setCharacteristic(
+      article.characteristicList
+        ? article.characteristicList
+        : [{ characteristic: '', value: '' }]
+    )
     setImage(article.imgList || [])
   }, [
     article.name,
@@ -70,10 +79,12 @@ export default function ArticleInfo(props) {
 
   const handleChangeNameInput = ({ target }) => {
     setArticleName(target.value)
+    setChanged(true)
   }
 
   const handleChangeDescriptionInput = ({ target }) => {
     setDescription(target.value)
+    setChanged(true)
   }
 
   const onChangeUploadButton = async ({ target }) => {
@@ -82,11 +93,13 @@ export default function ArticleInfo(props) {
       setImage((prev) => [...prev, data])
     })
     setIsLoading(false)
+    setChanged(true)
   }
 
   const handleDeleteImage = (img) => {
     setImage((prev) => prev.filter((item) => item.imgUrl !== img.imgUrl))
     deleteItemFromFirebaseStorage(img.imgName)
+    setChanged(true)
   }
 
   const onHandleSave = (value) => {
@@ -105,11 +118,14 @@ export default function ArticleInfo(props) {
         name: subEntityName.id,
       })
     )
+
+    setChanged(false)
   }
 
   return (
     <Wrapper className={query.subId === null ? classes.hide : classes.show}>
       {isLoading ? <CircularProgress /> : null}
+      {changed ? <Reminder>Save changes !</Reminder> : null}
       <Title>
         <TextField
           autoComplete="off"
@@ -117,6 +133,14 @@ export default function ArticleInfo(props) {
           placeholder="Article name"
           value={articleName || ''}
           onChange={handleChangeNameInput}
+          disabled={isLoading}
+          error={!articleName}
+          required
+          helperText={
+            !articleName ? (
+              <span className={classes.required}>required</span>
+            ) : null
+          }
         />
       </Title>
       <SwiperContainer>
@@ -129,7 +153,7 @@ export default function ArticleInfo(props) {
             onChange={onChangeUploadButton}
           />
           <label htmlFor="contained-button-file">
-            <Button variant="contained" component="span">
+            <Button variant="contained" component="span" disabled={isLoading}>
               Upload image
             </Button>
           </label>
@@ -138,6 +162,7 @@ export default function ArticleInfo(props) {
       <SubTitle>Description</SubTitle>
       <div className={classes.textArea}>
         <TextareaAutosize
+          disabled={isLoading}
           aria-label="minimum height"
           rowsMin={3}
           rowsMax={5}
@@ -149,9 +174,11 @@ export default function ArticleInfo(props) {
       <CharacteristicWrapper>
         <SubTitle>Characteristic</SubTitle>
         {characteristic ? (
-          <CharacteristicListItem
+          <CharacteristicList
             characteristic={characteristic}
             onHandleSave={onHandleSave}
+            isLoading={isLoading}
+            changed={changed}
           />
         ) : null}
       </CharacteristicWrapper>

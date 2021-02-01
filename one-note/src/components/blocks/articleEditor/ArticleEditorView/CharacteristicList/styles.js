@@ -2,18 +2,13 @@ import styled from 'styled-components'
 
 import MaterialIconButton from '@material-ui/core/IconButton'
 import MaterialTextField from '@material-ui/core/TextField'
-import { Field } from 'react-final-form'
 
 export const CharacteristicContainer = styled.div`
   width: 500px;
   display: flex;
   justify-content: center;
   margin: 5px 0px;
-
-  & input:nth-child(n + 2) {
-    width: 150px;
-    margin-left: 20px;
-  }
+  align-items: end;
 
   .MuiIconButton-root {
     padding: 0px;
@@ -30,11 +25,11 @@ export const TextField = styled(MaterialTextField)`
   }
 `
 
-export const Input = styled(Field)`
+export const Input = styled.input`
   height: 25px;
-  width: 300px;
+  width: 100%;
   outline: none;
-  border: 1px solid ${(props) => props.theme.secondary} !important;
+  border: 1px solid ${(props) => props.theme.secondary};
 `
 
 export const ButtonContainer = styled.div`
@@ -47,4 +42,9 @@ export const ButtonContainer = styled.div`
   .MuiIconButton-root {
     padding: 0px;
   }
+`
+
+export const Error = styled.span`
+  font-size: 12px;
+  color: #ff0c0c;
 `

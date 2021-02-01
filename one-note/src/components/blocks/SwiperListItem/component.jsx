@@ -4,7 +4,14 @@ import { makeStyles } from '@material-ui/styles'
 
 import Modal from '@/components/blocks/Modal'
 
-import { IconButton, DeleteIcon, Popup, CloseIcon, PopupButton } from './styles'
+import {
+  IconButton,
+  DeleteIcon,
+  Popup,
+  CloseIcon,
+  PopupButton,
+  Img,
+} from './styles'
 
 const useSstyles = makeStyles((theme) => {
   return {
@@ -49,7 +56,7 @@ export default function SwiperListItem(props) {
       </IconButton>
       <Modal open={showModal}>
         <Popup>
-          <img src={img.imgUrl} alt="img" className={classes.screenImg} />
+          <Img src={img.imgUrl} alt="img" className={classes.screenImg} />
           <PopupButton onClick={HandleClickClosePopup}>
             <CloseIcon />
           </PopupButton>
