@@ -76,3 +76,8 @@ export const CharacteristicWrapper = styled.div`
   flex-direction: column;
   margin-top: 10px;
 `
+
+export const Reminder = styled.span`
+  background-color: #f9deacab;
+  color: ${(props) => props.theme.error};
+`
