@@ -10,11 +10,10 @@ import {
 import {
   CREATE_SUB_ENTITY_REQUEST,
   UPDATE_SUB_ENTITY_REQUEST,
-  showSuccessSnackbar,
+  showSnackbar,
   DELETE_SUB_ENTITY_REQUEST,
   entityListRequest,
 } from '@/actions'
-// import { updateSubEntityList } from '@/utils/firebase'
 import { updateEntityInFirebaseDb } from '@/services'
 
 export function* watchCreateSubEntityRequest() {
@@ -42,9 +41,19 @@ function* workerCreateSubEntity({ payload }) {
 
     if (response.statusText === 'OK') {
       yield put(entityListRequest(payload.root))
-      yield put(showSuccessSnackbar(`${payload.name} created !`))
+      yield put(
+        showSnackbar({
+          messageText: `${payload.name} created !`,
+          severity: 'success',
+        })
+      )
     } else {
-      yield put(showSuccessSnackbar(`An error has occurred !`))
+      yield put(
+        showSnackbar({
+          messageText: `An error has occurred !`,
+          severity: 'error',
+        })
+      )
     }
   } catch {}
 }
@@ -74,9 +83,19 @@ function* workerUpdateSubEntity({ payload }) {
     })
     if (response.statusText === 'OK') {
       yield put(entityListRequest(payload.root))
-      yield put(showSuccessSnackbar('Changes saved !'))
+      yield put(
+        showSnackbar({
+          messageText: 'Changes saved !',
+          severity: 'success',
+        })
+      )
     } else {
-      yield put(showSuccessSnackbar(`An error has occurred !`))
+      yield put(
+        showSnackbar({
+          messageText: `An error has occurred !`,
+          severity: 'error',
+        })
+      )
     }
   } catch {}
 }
@@ -108,9 +127,19 @@ function* workerDeleteSubEntity({ payload }) {
 
     if (response.statusText === 'OK') {
       yield put(entityListRequest(payload.root))
-      yield put(showSuccessSnackbar(`${payload.name} deleted !`))
+      yield put(
+        showSnackbar({
+          messageText: `${payload.name} deleted !`,
+          severity: 'success',
+        })
+      )
     } else {
-      yield put(showSuccessSnackbar(`An error has occurred !`))
+      yield put(
+        showSnackbar({
+          messageText: `An error has occurred !`,
+          severity: 'error',
+        })
+      )
     }
   } catch {}
 }

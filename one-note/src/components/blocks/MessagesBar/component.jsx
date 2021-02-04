@@ -9,8 +9,9 @@ import { clearSnackbar } from '@/actions'
 export default function MessagesBar() {
   const dispatch = useDispatch()
   const DURATION_IN_MILISECONDS = 2500
-
-  const { successMessage, isOpen } = useSelector((state) => state.messages)
+  const { successMessage, isOpen, severity } = useSelector(
+    (state) => state.messages
+  )
 
   function handleClose() {
     dispatch(clearSnackbar())
@@ -22,7 +23,7 @@ export default function MessagesBar() {
       autoHideDuration={DURATION_IN_MILISECONDS}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-      <Alert onClose={handleClose} severity="success">
+      <Alert onClose={handleClose} severity={severity}>
         {successMessage}
       </Alert>
     </Snackbar>

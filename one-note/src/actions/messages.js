@@ -1,8 +1,8 @@
-export const SUCCESS_MESSAGE = 'SUCCESS_MESSAGE'
+export const SHOW_MESSAGE = 'SUCCESS_MESSAGE'
 export const CLEAR_MESSAGE = 'CLEAR_MESSAGE'
 
-export const showSuccessSnackbar = (message) => ({
-  type: SUCCESS_MESSAGE,
+export const showSnackbar = (message) => ({
+  type: SHOW_MESSAGE,
   payload: message,
 })
 

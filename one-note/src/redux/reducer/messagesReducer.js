@@ -1,17 +1,19 @@
-import { SUCCESS_MESSAGE, CLEAR_MESSAGE } from '@/actions'
+import { SHOW_MESSAGE, CLEAR_MESSAGE } from '@/actions'
 
 const initialState = {
   isOpen: false,
   successMessage: '',
+  severity: '',
 }
 
 export default function messages(state = initialState, { type, payload }) {
   switch (type) {
-    case SUCCESS_MESSAGE:
+    case SHOW_MESSAGE:
       return {
         ...state,
         isOpen: true,
-        successMessage: payload,
+        successMessage: payload.messageText,
+        severity: payload.severity,
       }
     case CLEAR_MESSAGE:
       return {
