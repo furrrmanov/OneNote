@@ -2,13 +2,11 @@ import { takeEvery, put, call } from 'redux-saga/effects'
 
 import { singIn } from '@/services'
 
-// import { singInWithGoogleAccountUsingFirebase } from '@/utils/firebase'
-
 import {
   SET_USER_REQUEST_FOR_EMAIL,
   SET_USER_REQUEST_FOR_GOOGLE_ACCOUNT,
   setUserInfo,
-  showSuccessSnackbar,
+  showSnackbar,
 } from '@/actions'
 import { tarnsformUserInfoData } from '@/utils/dataMappers'
 
@@ -25,7 +23,7 @@ function* workerUserSigninForEmail({ payload }) {
 
     yield put(setUserInfo(tarnsformUserInfoData(response.data)))
   } catch {
-    yield put(showSuccessSnackbar(`Login error !`))
+    yield put(showSnackbar({ messageText: `Login error !`, severity: 'error' }))
   }
 }
 

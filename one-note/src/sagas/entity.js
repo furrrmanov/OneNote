@@ -3,7 +3,7 @@ import { takeEvery, put, select, call } from 'redux-saga/effects'
 import {
   ENTITY_LIST_REQUEST,
   CREATE_ENTITY_REQUEST,
-  showSuccessSnackbar,
+  showSnackbar,
   entityListRequest,
   DELETE_ENTITY_REQUEST,
   setEntityList,
@@ -52,9 +52,19 @@ function* workerCreateEntity({ payload }) {
 
     if (response.statusText === 'OK') {
       yield put(entityListRequest(payload.root))
-      yield put(showSuccessSnackbar(`${payload.root} created !`))
+      yield put(
+        showSnackbar({
+          messageText: `${payload.root} created !`,
+          severity: 'success',
+        })
+      )
     } else {
-      yield put(showSuccessSnackbar(`An error has occurred !`))
+      yield put(
+        showSnackbar({
+          messageText: `An error has occurred !`,
+          severity: 'error',
+        })
+      )
     }
   } catch {}
 }
@@ -73,9 +83,19 @@ function* workerDeleteEntity({ payload }) {
 
     if (response.statusText === 'OK') {
       yield put(entityListRequest(payload.root))
-      yield put(showSuccessSnackbar(`${payload.root} deleted !`))
+      yield put(
+        showSnackbar({
+          messageText: `${payload.root} deleted !`,
+          severity: 'success',
+        })
+      )
     } else {
-      yield put(showSuccessSnackbar(`An error has occurred !`))
+      yield put(
+        showSnackbar({
+          messageText: `An error has occurred !`,
+          severity: 'error',
+        })
+      )
     }
   } catch {}
 }
