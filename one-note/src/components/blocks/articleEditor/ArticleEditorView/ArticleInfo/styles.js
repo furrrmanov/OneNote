@@ -78,6 +78,10 @@ export const CharacteristicWrapper = styled.div`
 `
 
 export const Reminder = styled.span`
-  background-color: #f9deacab;
+  position: absolute;
+  top: -12px;
+  right: 0;
+  width: 100%;
+  height: 40px;
   color: ${(props) => props.theme.error};
 `

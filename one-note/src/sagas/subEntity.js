@@ -1,8 +1,5 @@
 import { takeEvery, put, select, call } from 'redux-saga/effects'
 
-import moment from 'moment'
-import { v4 as uuidv4 } from 'uuid'
-
 import {
   filteredEntityList,
   activeEntity,
@@ -15,8 +12,10 @@ import {
   UPDATE_SUB_ENTITY_REQUEST,
   showSuccessSnackbar,
   DELETE_SUB_ENTITY_REQUEST,
+  entityListRequest,
 } from '@/actions'
-import { updateSubEntityList } from '@/utils/firebase'
+// import { updateSubEntityList } from '@/utils/firebase'
+import { updateEntityInFirebaseDb } from '@/services'
 
 export function* watchCreateSubEntityRequest() {
   yield takeEvery(CREATE_SUB_ENTITY_REQUEST, workerCreateSubEntity)
@@ -33,7 +32,7 @@ function* workerCreateSubEntity({ payload }) {
 
     const newSubEntity = createSubEntity(payload.name, payload.id)
 
-    yield call(updateSubEntityList, {
+    const response = yield call(updateEntityInFirebaseDb, {
       collectionName: `/${payload.root}`,
       collectionRoot: `${payload.root}/`,
       id: payload.id,
@@ -41,7 +40,12 @@ function* workerCreateSubEntity({ payload }) {
       data: [...entityList, newSubEntity],
     })
 
-    yield put(showSuccessSnackbar(`${payload.name} created !`))
+    if (response.statusText === 'OK') {
+      yield put(entityListRequest(payload.root))
+      yield put(showSuccessSnackbar(`${payload.name} created !`))
+    } else {
+      yield put(showSuccessSnackbar(`An error has occurred !`))
+    }
   } catch {}
 }
 
@@ -52,22 +56,29 @@ export function* wactUpdateSubEntityRequest() {
 function* workerUpdateSubEntity({ payload }) {
   try {
     const state = yield select()
-    const entity = activeEntity(state.entities[payload.root], payload.item.ownerId)
+    const entity = activeEntity(
+      state.entities[payload.root],
+      payload.item.ownerId
+    )
     const filteredSubEntityList = updateItemFromNoteList(
       entity[`${payload.name}List`],
       payload.item
     )
 
-    yield call(updateSubEntityList, {
+    const response = yield call(updateEntityInFirebaseDb, {
       collectionName: `/${payload.root}`,
       collectionRoot: `${payload.root}/`,
       id: payload.item.ownerId,
       itemName: `${payload.name}List`,
       data: filteredSubEntityList,
     })
+    if (response.statusText === 'OK') {
+      yield put(entityListRequest(payload.root))
+      yield put(showSuccessSnackbar('Changes saved !'))
+    } else {
+      yield put(showSuccessSnackbar(`An error has occurred !`))
+    }
   } catch {}
-
-  yield put(showSuccessSnackbar('Changes saved !'))
 }
 
 export function* watchDeleteSubEntityRequest() {
@@ -77,14 +88,17 @@ export function* watchDeleteSubEntityRequest() {
 function* workerDeleteSubEntity({ payload }) {
   try {
     const state = yield select()
-    const entity = activeEntity(state.entities[payload.root], payload.item.ownerId)
+    const entity = activeEntity(
+      state.entities[payload.root],
+      payload.item.ownerId
+    )
 
     const filteredSubEntityList = deleteItemFromNoteList(
       entity[`${payload.name}List`],
       payload.item
     )
 
-    yield call(updateSubEntityList, {
+    const response = yield call(updateEntityInFirebaseDb, {
       collectionName: `/${payload.root}`,
       collectionRoot: `${payload.root}/`,
       id: payload.item.ownerId,
@@ -92,6 +106,11 @@ function* workerDeleteSubEntity({ payload }) {
       data: filteredSubEntityList,
     })
 
-    yield put(showSuccessSnackbar(`${payload.name} deleted !`))
+    if (response.statusText === 'OK') {
+      yield put(entityListRequest(payload.root))
+      yield put(showSuccessSnackbar(`${payload.name} deleted !`))
+    } else {
+      yield put(showSuccessSnackbar(`An error has occurred !`))
+    }
   } catch {}
 }

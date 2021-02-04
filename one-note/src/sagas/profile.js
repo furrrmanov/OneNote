@@ -8,8 +8,8 @@ import {
   createUserProfileRequest,
 } from '@/actions'
 
-import { sendDataInFirebaseDb, getDataInFirebaseDb } from '@/utils/firebase'
 import { transformDataList } from '@/utils/dataMappers'
+import { getDataInFirebaseDb, sendDataInFirebaseDb } from '@/services'
 
 export function* watchUsersProfileListRequest() {
   yield takeEvery(USER_PROFILES_LIST_REQUEST, workerUsersProfileList)
@@ -18,8 +18,10 @@ export function* watchUsersProfileListRequest() {
 function* workerUsersProfileList() {
   const state = yield select()
   try {
-    const usersProfileList = yield call(getDataInFirebaseDb, '/userProfiles')
-    const userProfile = yield transformDataList(usersProfileList).find(
+    const usersProfileList = yield call(getDataInFirebaseDb, {
+      root: '/userProfiles',
+    })
+    const userProfile = yield transformDataList(usersProfileList.data).find(
       (item) => item.owner === state.user.email
     )
 

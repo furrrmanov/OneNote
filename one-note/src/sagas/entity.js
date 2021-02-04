@@ -6,12 +6,15 @@ import {
   showSuccessSnackbar,
   entityListRequest,
   DELETE_ENTITY_REQUEST,
+  setEntityList,
 } from '@/actions'
+
+import { transformDataList } from '@/utils/dataMappers'
 import {
   sendDataInFirebaseDb,
-  getEntityListInFirebaseDb,
-  deleteEntityInCollection,
-} from '@/utils/firebase'
+  getDataInFirebaseDb,
+  deleteEntityinFirebaseDb,
+} from '@/services'
 
 export function* watchEntityListRequest() {
   yield takeEvery(ENTITY_LIST_REQUEST, workerEntityList)
@@ -19,7 +22,16 @@ export function* watchEntityListRequest() {
 
 function* workerEntityList({ payload }) {
   try {
-    yield getEntityListInFirebaseDb(payload)
+    const state = yield select()
+    const response = yield call(getDataInFirebaseDb, {
+      root: `/${payload}`,
+    })
+
+    const userEntityList = yield transformDataList(response.data).filter(
+      (item) => item.owner === state.user.email
+    )
+
+    yield put(setEntityList({ data: userEntityList, entityName: payload }))
   } catch {}
 }
 
@@ -30,15 +42,20 @@ export function* watchCreateEntityRequest() {
 function* workerCreateEntity({ payload }) {
   try {
     const state = yield select()
-    yield call(sendDataInFirebaseDb, {
+    const response = yield call(sendDataInFirebaseDb, {
       value: {
         owner: state.user.email,
         name: payload.entityName,
       },
       root: `/${payload.root}`,
     })
-    yield put(entityListRequest())
-    yield put(showSuccessSnackbar(`${payload.root} created !`))
+
+    if (response.statusText === 'OK') {
+      yield put(entityListRequest(payload.root))
+      yield put(showSuccessSnackbar(`${payload.root} created !`))
+    } else {
+      yield put(showSuccessSnackbar(`An error has occurred !`))
+    }
   } catch {}
 }
 
@@ -48,13 +65,17 @@ export function* watchDeleteEntityRequest() {
 
 function* workerDeleteEntity({ payload }) {
   try {
-    yield call(deleteEntityInCollection, {
+    const response = yield call(deleteEntityinFirebaseDb, {
       collectionName: `/${payload.root}`,
       collectionRoot: `/${payload.root}/`,
       id: payload.entityId,
     })
 
-    yield put(entityListRequest())
-    yield put(showSuccessSnackbar(`${payload.root} deleted !`))
+    if (response.statusText === 'OK') {
+      yield put(entityListRequest(payload.root))
+      yield put(showSuccessSnackbar(`${payload.root} deleted !`))
+    } else {
+      yield put(showSuccessSnackbar(`An error has occurred !`))
+    }
   } catch {}
 }

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 
 import Modal from '@/components/blocks/Modal'
-
 import { FormattedMessage } from 'react-intl'
+
 import EntityScreenListItem from '@/components/blocks/entity/EntityScreen/EntityScreenListItem'
 import ContextMenu from '@/components/blocks/ContextMenu'
 import { deleteEntity, createEntity } from '@/actions'
