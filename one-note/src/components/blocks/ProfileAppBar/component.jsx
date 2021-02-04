@@ -6,8 +6,8 @@ import { FormattedMessage } from 'react-intl'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { userLogOut } from '@/actions'
-import { singOutUsingFirebase } from '@/utils/firebase'
 import { ROUT_FOR_SIGNIN_PAGE } from '@/constants'
+import { signOut } from '@/services'
 
 import {
   AppBar,
@@ -48,7 +48,7 @@ export default function ProfileAppBar() {
   const userSingOut = () => {
     setUserAnchorEl(null)
     dispatch(userLogOut(false))
-    singOutUsingFirebase()
+    signOut()
     history.push(ROUT_FOR_SIGNIN_PAGE)
   }
 

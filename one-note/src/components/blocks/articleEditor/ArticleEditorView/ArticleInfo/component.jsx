@@ -4,10 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/styles'
 
 import CircularProgress from '@/components/controls/Spinner'
-import {
-  uploadFileToFirebaseStorage,
-  deleteItemFromFirebaseStorage,
-} from '@/utils/firebase'
+import { uploadFileInStorage, deleteFileInStorage } from '@/services'
 import { updateNote } from '@/actions'
 import { activeArticle, activeEntity } from '@/utils/dataMappers'
 import SwiperImages from '@/components/blocks/Swiper'
@@ -89,16 +86,19 @@ export default function ArticleInfo(props) {
 
   const onChangeUploadButton = async ({ target }) => {
     setIsLoading(true)
-    await uploadFileToFirebaseStorage(target.files[0]).then((data) => {
-      setImage((prev) => [...prev, data])
+    const formData = new FormData()
+    formData.append('image', target.files[0])
+    await uploadFileInStorage(formData).then((response) => {
+      setImage((prev) => [...prev, response.data])
     })
+
     setIsLoading(false)
     setChanged(true)
   }
 
   const handleDeleteImage = (img) => {
     setImage((prev) => prev.filter((item) => item.imgUrl !== img.imgUrl))
-    deleteItemFromFirebaseStorage(img.imgName)
+    deleteFileInStorage(img.imgName)
     setChanged(true)
   }
 
@@ -150,6 +150,7 @@ export default function ArticleInfo(props) {
             accept="image/*"
             id="contained-button-file"
             type="file"
+            name="image"
             onChange={onChangeUploadButton}
           />
           <label htmlFor="contained-button-file">

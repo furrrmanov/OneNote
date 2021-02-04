@@ -1,13 +1,14 @@
 import { takeEvery, put, call } from 'redux-saga/effects'
 
-import {
-  singInWithEmailUsingFirebase,
-  singInWithGoogleAccountUsingFirebase,
-} from '@/utils/firebase'
+import { singIn } from '@/services'
+
+// import { singInWithGoogleAccountUsingFirebase } from '@/utils/firebase'
+
 import {
   SET_USER_REQUEST_FOR_EMAIL,
   SET_USER_REQUEST_FOR_GOOGLE_ACCOUNT,
   setUserInfo,
+  showSuccessSnackbar,
 } from '@/actions'
 import { tarnsformUserInfoData } from '@/utils/dataMappers'
 
@@ -16,12 +17,16 @@ export function* watchUserSingInforEmailRequest() {
 }
 
 function* workerUserSigninForEmail({ payload }) {
-  const data = yield call(
-    singInWithEmailUsingFirebase,
-    payload.userEmail,
-    payload.userPassword
-  )
-  yield put(setUserInfo(tarnsformUserInfoData(data)))
+  try {
+    const response = yield call(singIn, {
+      email: payload.userEmail,
+      password: payload.userPassword,
+    })
+
+    yield put(setUserInfo(tarnsformUserInfoData(response.data)))
+  } catch {
+    yield put(showSuccessSnackbar(`Login error !`))
+  }
 }
 
 export function* watchUserSingInforGoogleAccountRequest() {
@@ -32,6 +37,6 @@ export function* watchUserSingInforGoogleAccountRequest() {
 }
 
 function* workerUserSigninForGoogleAccount() {
-  const data = yield call(singInWithGoogleAccountUsingFirebase)
-  yield put(setUserInfo(tarnsformUserInfoData(data)))
+  // const data = yield call(singInWithGoogleAccountUsingFirebase)
+  // yield put(setUserInfo(tarnsformUserInfoData(data)))
 }

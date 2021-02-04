@@ -38,7 +38,6 @@ export default function ThemeWrapper({ children }) {
       action: {
         selected: themes.baseTheme.secondary,
         hover: themes.baseTheme.primary,
-        // disabled: themes.baseTheme.elements,
       },
     },
   })
