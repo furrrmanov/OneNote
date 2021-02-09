@@ -19,6 +19,7 @@ function* workerUsersProfileList() {
   const state = yield select()
   try {
     const usersProfileList = yield call(getDataInFirebaseDb, {
+      path: '/userProfiles',
       root: '/userProfiles',
     })
     const userProfile = yield transformDataList(usersProfileList.data).find(
@@ -46,7 +47,11 @@ function* workerCreateUserProfile() {
 
   yield put(setUserProfile(profile))
 
-  yield call(sendDataInFirebaseDb, { value: profile, root: '/userProfiles' })
+  yield call(sendDataInFirebaseDb, {
+    value: profile,
+    root: '/userProfiles',
+    path: '/userProfiles/create-profile',
+  })
 
   yield put(usersProfileListRequest())
 }

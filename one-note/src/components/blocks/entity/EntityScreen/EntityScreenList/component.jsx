@@ -65,7 +65,12 @@ export default function EntityScreenList(props) {
   }
 
   const handleClickButtonOk = () => {
-    dispatch(createEntity({ entityName: createdName, root: entityName.id }))
+    dispatch(
+      createEntity({
+        entityName: createdName,
+        root: entityName.id,
+      })
+    )
     setShowModal(false)
     setCreatedName('')
   }

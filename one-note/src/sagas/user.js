@@ -8,7 +8,6 @@ import {
   setUserInfo,
   showSnackbar,
 } from '@/actions'
-import { tarnsformUserInfoData } from '@/utils/dataMappers'
 
 export function* watchUserSingInforEmailRequest() {
   yield takeEvery(SET_USER_REQUEST_FOR_EMAIL, workerUserSigninForEmail)
@@ -17,11 +16,10 @@ export function* watchUserSingInforEmailRequest() {
 function* workerUserSigninForEmail({ payload }) {
   try {
     const response = yield call(singIn, {
-      email: payload.userEmail,
+      username: payload.userEmail,
       password: payload.userPassword,
     })
-
-    yield put(setUserInfo(tarnsformUserInfoData(response.data)))
+    yield put(setUserInfo(response.data))
   } catch {
     yield put(showSnackbar({ messageText: `Login error !`, severity: 'error' }))
   }

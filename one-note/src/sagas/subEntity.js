@@ -34,6 +34,7 @@ function* workerCreateSubEntity({ payload }) {
     const response = yield call(updateEntityInFirebaseDb, {
       collectionName: `/${payload.root}`,
       collectionRoot: `${payload.root}/`,
+      path: `${payload.root}/update-${payload.root}`,
       id: payload.id,
       itemName: `${payload.name}List`,
       data: [...entityList, newSubEntity],
@@ -77,6 +78,7 @@ function* workerUpdateSubEntity({ payload }) {
     const response = yield call(updateEntityInFirebaseDb, {
       collectionName: `/${payload.root}`,
       collectionRoot: `${payload.root}/`,
+      path: `${payload.root}/update-${payload.root}`,
       id: payload.item.ownerId,
       itemName: `${payload.name}List`,
       data: filteredSubEntityList,
@@ -120,6 +122,7 @@ function* workerDeleteSubEntity({ payload }) {
     const response = yield call(updateEntityInFirebaseDb, {
       collectionName: `/${payload.root}`,
       collectionRoot: `${payload.root}/`,
+      path: `${payload.root}/update-${payload.root}`,
       id: payload.item.ownerId,
       itemName: `${payload.name}List`,
       data: filteredSubEntityList,

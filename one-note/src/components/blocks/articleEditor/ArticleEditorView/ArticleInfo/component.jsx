@@ -76,12 +76,17 @@ export default function ArticleInfo(props) {
 
   const handleChangeNameInput = ({ target }) => {
     setArticleName(target.value)
-    setChanged(true)
+    article.name.toLowerCase().trim() === target.value.toLowerCase().trim()
+      ? setChanged(false)
+      : setChanged(true)
   }
 
   const handleChangeDescriptionInput = ({ target }) => {
     setDescription(target.value)
-    setChanged(true)
+    article.description.toLowerCase().trim() ===
+    target.value.toLowerCase().trim()
+      ? setChanged(false)
+      : setChanged(true)
   }
 
   const onChangeUploadButton = async ({ target }) => {
