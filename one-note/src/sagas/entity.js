@@ -24,6 +24,7 @@ function* workerEntityList({ payload }) {
   try {
     const state = yield select()
     const response = yield call(getDataInFirebaseDb, {
+      path: `/${payload}`,
       root: `/${payload}`,
     })
 
@@ -47,6 +48,7 @@ function* workerCreateEntity({ payload }) {
         owner: state.user.email,
         name: payload.entityName,
       },
+      path: `/${payload.root}/create-${payload.root}`,
       root: `/${payload.root}`,
     })
 
@@ -78,6 +80,7 @@ function* workerDeleteEntity({ payload }) {
     const response = yield call(deleteEntityinFirebaseDb, {
       collectionName: `/${payload.root}`,
       collectionRoot: `/${payload.root}/`,
+      path: `/${payload.root}/delete-${payload.root}`,
       id: payload.entityId,
     })
 

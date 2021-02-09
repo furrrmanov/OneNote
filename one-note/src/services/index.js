@@ -9,21 +9,21 @@ export const singIn = (value) => {
 }
 
 export const getDataInFirebaseDb = (value) => {
-  return axios.post('http://localhost:3001/api/entity/entity-list', value)
+  return axios.post(`http://localhost:3001/api/${value.path}`, value)
 }
 
 export const sendDataInFirebaseDb = (value) => {
-  return axios.post('http://localhost:3001/api/entity/create-entity', value)
+  return axios.post(`http://localhost:3001/api/${value.path}`, value)
 }
 
 export const deleteEntityinFirebaseDb = (value) => {
-  return axios.delete('http://localhost:3001/api/entity/delete-entity', {
+  return axios.delete(`http://localhost:3001/api/${value.path}`, {
     data: { value },
   })
 }
 
 export const updateEntityInFirebaseDb = (value) => {
-  return axios.post('http://localhost:3001/api/entity/update-entity', value)
+  return axios.post(`http://localhost:3001/api/${value.path}`, value)
 }
 
 export const uploadFileInStorage = (file) => {

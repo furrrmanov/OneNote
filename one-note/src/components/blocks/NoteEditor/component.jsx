@@ -66,8 +66,8 @@ export default function NoteEditor(props) {
         />
         <DateContainer>
           {note.date
-            ? moment.unix(note.date / 1000).format('DDD MMMM, YYYY HH:mm')
-            : moment().format('DDD MMMM, YYYY HH:mm')}
+            ? moment.unix(note.date / 1000).format('D MMMM, YYYY HH:mm')
+            : moment().format('D MMMM, YYYY HH:mm')}
         </DateContainer>
       </NoteInfo>
       <ReactQuill

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 import MaterialButton from '@material-ui/core/Button'
 import MaterialTextareaAutosize from '@material-ui/core/TextareaAutosize'
@@ -17,6 +17,7 @@ export const Wrapper = styled.div`
 export const Title = styled.span`
   display: flex;
   justify-content: center;
+  margin-top: 10px;
 
   & input {
     width: 500px;
@@ -77,11 +78,22 @@ export const CharacteristicWrapper = styled.div`
   margin-top: 10px;
 `
 
+const flickering = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`
+
 export const Reminder = styled.span`
   position: absolute;
-  top: -12px;
+  top: -14px;
   right: 0;
   width: 100%;
   height: 40px;
   color: ${(props) => props.theme.error};
+  animation: ${flickering} 1s linear infinite;
 `
